@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import pb from '@/lib/pocketbaseClient';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -54,15 +53,19 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
-      const submitData = {
-        name: formData.name,
-        email: formData.email,
-        company: formData.company,
-        service_interest: formData.service_interest,
-        message: formData.message,
-      };
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          service_interest: formData.service_interest,
+          message: formData.message,
+        }),
+      });
 
-      await pb.collection('contacts').create(submitData, { $autoCancel: false });
+      if (!res.ok) throw new Error('Failed to submit');
 
       toast.success('Thank you for your inquiry. We will contact you shortly.');
 
