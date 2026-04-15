@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -14,6 +15,12 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
+    // Save to database
+    await sql`
+      INSERT INTO contacts (name, email, company, service_interest, message)
+      VALUES (${name}, ${email}, ${company}, ${service_interest}, ${message})
+    `;
 
     // Send notification email to your team
     await resend.emails.send({
