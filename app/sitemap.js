@@ -1,7 +1,9 @@
+import { getAllPosts } from '@/lib/blog';
+
 export default function sitemap() {
   const baseUrl = "https://gcsolutionsnv.com";
 
-  return [
+  const staticPages = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -32,5 +34,20 @@ export default function sitemap() {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
+
+  const posts = getAllPosts().map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...posts];
 }
