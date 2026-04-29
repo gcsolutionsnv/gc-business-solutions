@@ -1,0 +1,189 @@
+---
+title: "The NetSuite Year-End Close Checklist Every Controller Needs"
+excerpt: "A step-by-step NetSuite year-end close checklist covering reconciliations, accruals, fixed assets, intercompany, and audit prep — built from real client closes."
+date: "2026-04-28"
+author: "GC Business Solutions"
+category: "NetSuite Guide"
+readTime: "10 min read"
+image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=1200&auto=format&fit=crop"
+---
+
+Year-end close in NetSuite is one of the most stressful periods of the accounting year — and one of the most preventable sources of stress. Every controller we have worked with has horror stories: discovered un-reconciled accounts, forgotten accruals, or audit findings that traced back to a missed step three months earlier.
+
+This is the checklist we hand to our clients heading into close. It covers the full sequence — from pre-close prep through audit handoff — and the NetSuite-specific gotchas that catch teams off guard.
+
+You can use it as a starting template for your own close. Adapt to your industry and entity structure as needed.
+
+## Pre-Close (4–6 Weeks Before Year-End)
+
+The biggest mistake most teams make is starting close in January. By then it is too late to fix structural issues. Use the weeks before year-end to clean up.
+
+**1. Run an open transactions audit**
+
+- Pull a saved search of all unapproved purchase orders, expense reports, and journal entries
+- Chase down approvers on anything older than 30 days
+- Anything that is not going to be approved should be voided, not left dangling
+
+**2. Reconcile high-volume control accounts early**
+
+- Do a "soft close" of bank accounts, credit cards, and clearing accounts as of mid-quarter
+- Identify any reconciling items now while you can still investigate them
+- Goal: enter year-end with zero stale reconciling items
+
+**3. Validate intercompany balances (OneWorld customers)**
+
+- Run the **Intercompany Reconciliation** report
+- Investigate any out-of-balance pairs immediately — these are the hardest to fix late
+- Confirm elimination accounts are configured correctly for consolidation
+
+**4. Confirm subsidiary, period, and currency setup**
+
+- All subsidiaries should have year-end periods open and not locked yet
+- Confirm functional currency settings on each subsidiary are correct
+- Verify exchange rate types (Average, Historical, Current) are configured for consolidation
+
+## Close Week 1: Subledger Cutoffs
+
+The first week of close is about getting the subledgers to match the GL.
+
+**5. Accounts Receivable cutoff**
+
+- Stop invoicing for the prior period; any late items must be back-dated only with controller approval
+- Run **A/R Aging Detail** and reconcile to the GL trial balance — they must tie
+- Review unapplied customer payments and apply them or refund
+- Confirm credit memos are properly applied to invoices, not floating
+
+**6. Accounts Payable cutoff**
+
+- Cut off vendor bill entry as of the close date
+- Run **A/P Aging Detail** and reconcile to GL
+- Capture any **unrecorded invoices** (received goods/services not yet billed) — these are accruals
+- Reconcile vendor statements for major suppliers
+
+**7. Inventory and COGS**
+
+- Run physical inventory or cycle counts and post adjustments
+- Run **Inventory Valuation Report** and reconcile to the GL inventory accounts
+- Verify no transactions are stuck in "Pending Receipt" or "Pending Bill" status
+- Review the **Items Pending Inventory Costing** report — costing must be complete before close
+
+**8. Fixed Assets**
+
+- Run depreciation for the period in **Fixed Assets Management** (or your depreciation schedule)
+- Post any disposals, transfers, or impairments
+- Reconcile FA subledger to GL fixed asset and accumulated depreciation accounts
+
+## Close Week 2: GL Adjustments and Accruals
+
+With subledgers closed, the focus moves to GL-level adjustments.
+
+**9. Standard accruals**
+
+- Payroll accrual (compensation earned but not paid)
+- Bonus accrual
+- Vacation/PTO accrual
+- Utility, rent, and other recurring expense accruals
+- Interest accrual on debt
+
+**10. Prepaid expenses**
+
+- Review prepaid balances and post amortization for the period
+- For multi-period prepaids, automate with NetSuite's **Amortization Schedule** feature
+
+**11. Deferred revenue**
+
+- Review deferred revenue balances and post recognition entries
+- For complex contracts (subscription, multi-element), run **Advanced Revenue Management** schedules
+- Confirm any contract modifications during the period are properly reflected
+
+**12. Bank and cash reconciliations**
+
+- Final bank reconciliations for every account
+- Investigate every reconciling item — old uncleared checks should be voided
+- Reconcile credit card and merchant accounts
+
+**13. Tax provisions and liabilities**
+
+- Sales tax liability reconciliation
+- Income tax provision accrual (work with your tax provider)
+- Payroll tax liability reconciliation
+
+## Close Week 3: Review and Lock
+
+**14. Run financial statements and analytical review**
+
+- Income Statement, Balance Sheet, Cash Flow — for current period and comparative periods
+- Compare to budget and prior year — investigate any variance over your materiality threshold
+- Run statements by department, class, and location to spot anomalies
+
+**15. Reclassifications**
+
+- Review any miscoded transactions and post reclass journals
+- Common cleanups: balance sheet items in P&L accounts, expenses in the wrong department
+
+**16. Lock the period**
+
+- In NetSuite, go to **Setup > Accounting > Manage Accounting Periods**
+- Lock A/R, A/P, Payroll, and All in the closed period
+- Confirm no users can post back to the locked period (test with a low-permission user)
+
+**17. Generate close binder**
+
+- Export reconciliations, supporting schedules, and journal entry support
+- Save to a permanent location (SharePoint, Drive, document management system)
+- Include a sign-off log showing who reconciled what
+
+## Audit Preparation
+
+If your year-end close is also an audit close, add these steps.
+
+**18. Auditor PBC list**
+
+- Pull the standard schedules requested by auditors:
+- Trial balance and consolidating trial balance
+- A/R aging with subsequent collections
+- A/P aging
+- Fixed asset rollforward
+- Debt rollforward
+- Equity rollforward
+- Stock comp expense schedule (if applicable)
+
+**19. Sample selection support**
+
+- Auditors will sample transactions for testing
+- Make sure transaction-level support (invoices, POs, contracts) is accessible
+- NetSuite's drill-down and **Transaction Audit Trail** reports speed this up dramatically
+
+**20. Internal controls documentation**
+
+- Confirm SOX or internal control documentation is current
+- Run user access and segregation of duties reports
+- Document any control deficiencies and remediation plans
+
+## NetSuite-Specific Gotchas
+
+A few issues we see repeatedly that are worth flagging:
+
+- **Period locking has multiple settings.** Locking A/R does not lock journals. Make sure you lock **All** when you are truly done.
+- **Foreign currency revaluation.** OneWorld customers need to run currency revaluation before consolidation. Forgetting this leads to unexplained variances.
+- **Inventory costing must complete.** If items are still in "Pending Costing" status, your COGS will be wrong. Run the costing process and verify zero pending items before locking.
+- **Saved search dependencies.** If your close relies on saved searches that filter by period, confirm they are using the **closed period** parameter, not hard-coded dates.
+- **Workflow approvals can block close.** Pending workflow approvals on journal entries will prevent posting. Audit your approval queues before close.
+
+## Make Next Year Easier
+
+The best time to prepare for next year's close is the week after this year's close, while pain points are fresh.
+
+- **Document what went wrong** — every issue is a candidate for automation or process change
+- **Build saved searches** for the reconciliations you ran manually this year
+- **Schedule recurring journals** for predictable monthly accruals
+- **Use NetSuite's Period Close Checklist** feature to track progress and assign owners
+- **Move month-end closer** — every month-end you tighten makes year-end easier
+
+> At GC Business Solutions, we help NetSuite teams shorten their close cycle through better automation, cleaner reconciliations, and tighter controls. If your close is taking longer than it should, [see our services](/services) or get in touch for a close assessment.
+
+## Bottom Line
+
+A clean NetSuite year-end close is not luck — it is the product of preparation, discipline, and the right tooling. Use this checklist as a starting point and adapt it to your business. The teams that close fast are the teams that **start early, lock periods aggressively, and document everything.**
+
+Want a customized version of this checklist tailored to your entity structure and modules? [Contact us](/contact) and we will send you an editable template.

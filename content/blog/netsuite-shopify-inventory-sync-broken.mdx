@@ -1,0 +1,116 @@
+---
+title: "Why Your NetSuite-Shopify Inventory Sync Is Broken (And How to Fix It)"
+excerpt: "Overselling, stale stock counts, and ghost inventory — the five most common reasons NetSuite-Shopify inventory sync goes wrong, and how to diagnose each one."
+date: "2026-04-25"
+author: "GC Business Solutions"
+category: "Analytics & Integration"
+readTime: "9 min read"
+image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop"
+---
+
+If you sell on Shopify and run NetSuite as your back-office system, you have probably hit some version of this nightmare: a customer orders an item that shows in stock on Shopify, your warehouse picks the order, and the bin is empty.
+
+Or worse — you watch your Shopify inventory drift further from NetSuite every week, and nobody can explain why.
+
+Inventory sync between NetSuite and Shopify is one of the most common integrations we work on, and it is also one of the most commonly broken. Here are the five root causes we see most often, and how to fix each one.
+
+## 1. You Are Syncing Too Slowly
+
+The single most common issue: your sync runs every 15 minutes, every hour, or even nightly — and that is simply not fast enough for a busy storefront.
+
+**The symptom:** Overselling. A customer buys something on Shopify before NetSuite can update the available quantity, so two customers buy the last unit.
+
+**Why it happens:** Most off-the-shelf connectors run on a schedule, not in real time. If you sell 100+ units per hour of a hot SKU, even a 5-minute lag is too long.
+
+**How to fix it:**
+
+- **Move to event-driven sync** — push inventory updates from NetSuite to Shopify the moment a fulfillment, transfer, or adjustment happens
+- **Use Shopify webhooks** to notify NetSuite of orders the moment they are placed
+- **Implement reservations** — when an order is placed in Shopify, immediately reserve the inventory in NetSuite so other channels see the lower count
+
+**Pro tip:** For high-velocity SKUs, consider a "buffer" — only expose 90–95% of physical stock on Shopify so brief sync gaps do not cause overselling.
+
+## 2. Multiple Locations Are Confusing the System
+
+If you fulfill from more than one warehouse — or if you use a 3PL plus your own warehouse — multi-location inventory is almost certainly part of the problem.
+
+**The symptom:** Shopify shows total inventory correctly but routes orders to the wrong location, or shows a SKU as out-of-stock when it is available at one location.
+
+**Why it happens:** NetSuite's location model and Shopify's location model do not map 1:1 by default. Many connectors aggregate all NetSuite locations into a single Shopify location, which breaks routing logic.
+
+**How to fix it:**
+
+- **Map every NetSuite location to a corresponding Shopify location** — do not aggregate
+- **Decide which locations are "sellable"** in Shopify (you may not want a damaged-goods or transit location exposed)
+- **Configure Shopify's fulfillment priority** to match your real fulfillment logic (closest to customer, lowest cost, etc.)
+- **For 3PLs:** make sure 3PL inventory updates feed into NetSuite first, then propagate to Shopify
+
+## 3. Returns and Adjustments Are Not Flowing Both Ways
+
+Sync usually works fine for outbound (sales) but breaks down on the reverse flow — returns, adjustments, and transfers.
+
+**The symptom:** Inventory drift. Over weeks, NetSuite and Shopify counts diverge with no obvious cause.
+
+**Why it happens:** Many integrations are one-way (NetSuite → Shopify) or only handle a subset of transaction types. Customer returns processed in Shopify do not update NetSuite, or warehouse adjustments in NetSuite never push to Shopify.
+
+**How to fix it:**
+
+- **Audit every transaction type that affects inventory:** sales, returns, transfers, cycle counts, write-offs, kit assemblies
+- **Map each one** to the corresponding action in the other system
+- **Run a reconciliation report weekly** comparing on-hand quantities — fix discrepancies immediately, not at year-end
+
+**Pro tip:** A monthly inventory reconciliation report should be a standing meeting. The longer drift sits, the harder it is to debug.
+
+## 4. Bundles, Kits, and Variants Are Not Modeled Correctly
+
+If you sell bundles ("buy 3 t-shirts get 10% off") or kit/assembly items, this is a frequent failure point.
+
+**The symptom:** Bundles oversell their components. A customer buys a kit, but the underlying SKUs do not deplete in Shopify, so they appear available even when the kit cannot be made.
+
+**Why it happens:** NetSuite has multiple item types (Inventory Item, Kit/Package, Assembly Item, Lot Numbered Item). Shopify essentially has one (Product with Variants). Translating between them is non-trivial and most connectors do it poorly.
+
+**How to fix it:**
+
+- **Decide where your "source of truth" lives for kits** — usually NetSuite, with the kit's available quantity calculated from component stock
+- **Push the calculated kit availability** to Shopify, not just the kit's own stock
+- **For assemblies:** ensure assembly builds in NetSuite trigger inventory updates for both the parent and the components
+- **Variants:** always sync at the SKU level (NetSuite item) rather than the parent product level
+
+## 5. Your Connector Cannot Handle Your Volume
+
+Off-the-shelf NetSuite-Shopify connectors are often built for small businesses doing 100 orders a day. If you are doing thousands, you may be hitting rate limits or queue backlogs that you do not even realize.
+
+**The symptom:** Sync starts strong, then degrades. Updates take longer to propagate, queues back up, and eventually orders or inventory updates start failing silently.
+
+**Why it happens:** NetSuite's APIs have governance limits (units per request, concurrent requests). Shopify has API rate limits. Connectors that worked at 200 orders/day fall over at 2,000 orders/day.
+
+**How to fix it:**
+
+- **Monitor your integration's queue depth and error rate** — most teams have no visibility here
+- **Batch updates intelligently** — do not send one API call per SKU when you can send 100 at once
+- **Use NetSuite's RESTlet or SuiteScript 2.x async APIs** for high-volume operations
+- **Consider middleware** (Celigo, Boomi, custom) instead of point-to-point connectors at higher volumes
+- **Set up alerting** so a failing sync does not silently degrade for days before someone notices
+
+## A Diagnostic Checklist
+
+If your sync is broken right now and you do not know where to start, run through this checklist:
+
+1. **What is your sync frequency?** If it is anything other than real-time / event-driven, that is likely the issue
+2. **Are NetSuite and Shopify locations mapped 1:1?** If not, fix the mapping
+3. **Are returns updating NetSuite?** Pull a sample of last week's Shopify returns and check
+4. **Are kits/bundles modeled correctly?** Buy one yourself and watch the inventory move
+5. **What is your queue depth?** If your connector has no monitoring, that is a red flag
+6. **Run a reconciliation report.** Compare on-hand by SKU between systems — what is the variance?
+
+## When to Call for Help
+
+Some of these you can fix in-house. Others require deeper expertise — especially when you are working with custom item types, multi-channel fulfillment, or high transaction volumes.
+
+> At GC Business Solutions, we build custom NetSuite-Shopify integrations that handle real-world complexity: multi-location, multi-channel, kits, returns, and high volume. We also offer integration audits if your current setup is broken and you need a second opinion. [See our analytics and integration services](/analytics).
+
+## Bottom Line
+
+A broken NetSuite-Shopify sync is not just a technical problem — it costs you customer trust, fulfillment efficiency, and accurate financial reporting. Most of the issues we see come down to **sync frequency**, **location mapping**, **two-way flow**, **kit handling**, and **scale**.
+
+If you are dealing with any of these symptoms and want a no-pressure assessment, [contact us](/contact). We will run a quick diagnostic on your current integration and tell you exactly what is broken — and what it would take to fix it.
